@@ -39,4 +39,13 @@ const admin = (req, res, next) => {
   }
 }
 
-export { protect, admin }
+const shopOwner = (req, res, next)=>{
+  if(req.user && req.user.isShopOwner){
+    next()
+  }else{
+    res.status(404)
+    throw new Error("Not shop owner")
+  }
+}
+
+export { protect, admin, shopOwner }

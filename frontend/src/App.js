@@ -18,6 +18,8 @@ import UserEditScreen from './screens/UserEditScreen'
 import ProductListScreen from './screens/ProductListScreen'
 import ProductEditScreen from './screens/ProductEditScreen'
 import OrderListScreen from './screens/OrderListScreen'
+import CategoryListScreen from "./screens/CategoryListScreen"
+import CreateCategory from './screens/CreateCategory'
 
 const App = () => {
   return (
@@ -56,6 +58,10 @@ const App = () => {
             exact
           />
           <Route path='/' component={HomeScreen} exact />
+
+          <Route path="/admin/categories" component={CategoryListScreen} exact/>
+          <Route path="/admin/categories/create" component={CreateCategory} exact/>
+
         </Container>
       </main>
       <Footer />
