@@ -21,11 +21,13 @@ const ProductEditScreen = ({ match, history }) => {
   const [category, setCategory] = useState("");
   const [countInStock, setCountInStock] = useState(0);
   const [description, setDescription] = useState("");
+  const [store, setStore] = useState("");
   const [uploading, setUploading] = useState(false);
 
   const dispatch = useDispatch();
 
   const productDetails = useSelector((state) => state.productDetails);
+  const storeDetails = useSelector(state=> state.store)
   const { loading, error, product } = productDetails;
   const categories = useSelector((state) => state.categoryList);
   const { loading: loadingCategory, categories: categoryList } = categories;
@@ -35,8 +37,6 @@ const ProductEditScreen = ({ match, history }) => {
     error: errorUpdate,
     success: successUpdate,
   } = productUpdate;
-
-  console.log(category);
 
   useEffect(() => {
     dispatch(listCategory());
@@ -54,12 +54,12 @@ const ProductEditScreen = ({ match, history }) => {
         setCategory(product.category);
         setCountInStock(product.countInStock);
         setDescription(product.description);
+        setStore(product.store);
       }
     }
   }, [dispatch, history, productId, product, successUpdate]);
 
   const uploadFileHandler = async (e) => {
-    console.log(e.target.files[0]);
     const file = e.target.files[0];
     const formData = new FormData();
     formData.append("image", file);
@@ -97,6 +97,7 @@ const ProductEditScreen = ({ match, history }) => {
         category,
         description,
         countInStock,
+        store,
       })
     );
   };
@@ -179,8 +180,9 @@ const ProductEditScreen = ({ match, history }) => {
               <Form.Control
                 as="select"
                 onChange={(e) => setCategory(e.target.value)}
+                defaultValue={"DEFAULT"}
               >
-                <option selected>Open this select menu</option>
+                <option selected value={"DEFAULT"}>Open this select menu</option>
                 {categoryList &&
                   categoryList.map((category) => (
                     <option value={category.name} key={category._id}>
@@ -193,7 +195,7 @@ const ProductEditScreen = ({ match, history }) => {
             <Form.Group controlId="description">
               <Form.Label>Description</Form.Label>
               <Form.Control
-                as="textarea" 
+                as="textarea"
                 placeholder="Enter description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}

@@ -33,6 +33,7 @@ import {
   categoryListReducer,
   categoryCreateReducer
 } from "./reducers/categoryReducers"
+import { marketReducer, createMarketReducer, storesPendingReducer, storePendingReducer } from "./reducers/marketReducers"
 
 const reducer = combineReducers({
   productList: productListReducer,
@@ -58,6 +59,10 @@ const reducer = combineReducers({
   orderDeliver: orderDeliverReducer,
   orderListMy: orderListMyReducer,
   orderList: orderListReducer,
+  market: marketReducer,
+  createMarket : createMarketReducer,
+  marketsPending: storesPendingReducer,
+  marketPending: storePendingReducer
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')

@@ -19,7 +19,6 @@ const CreateCategory = ({ history }) => {
     success: successCreate,
   } = category;
   const dispatch = useDispatch();
-  console.log(successCreate)
 
   useEffect(() => {
     dispatch({ type: CATEGORY_CREATE_GET })

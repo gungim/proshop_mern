@@ -9,27 +9,31 @@ import Paginate from "../components/Paginate";
 import ProductCarousel from "../components/ProductCarousel";
 import Meta from "../components/Meta";
 import { listProducts } from "../actions/productActions";
+import { listCategory } from "../actions/categoryActions";
 
 const HomeScreen = ({ match }) => {
   const keyword = match.params.keyword;
-  const [max, setMax] = useState('');
-  const [min, setMin] = useState('');
-
+  const [max, setMax] = useState("");
+  const [min, setMin] = useState("");
+  const [cat, setCat] = useState("");
   const pageNumber = match.params.pageNumber || 1;
 
   const dispatch = useDispatch();
 
   const productList = useSelector((state) => state.productList);
+  const categories = useSelector((state) => state.categoryList);
+  const { loading: loadingCategory, categories: categoryList } = categories;
+
   const { loading, error, products, page, pages } = productList;
 
   useEffect(() => {
-    dispatch(listProducts(keyword, pageNumber, min, max));
+    dispatch(listProducts(keyword, pageNumber, min, max, cat));
+    dispatch(listCategory());
   }, [dispatch, keyword, pageNumber]);
 
   const handleFilterWithPrice = () => {
-    dispatch(listProducts(keyword, pageNumber, min, max));
+    dispatch(listProducts(keyword, pageNumber, min, max, cat));
   };
-
   return (
     <>
       <Meta />
@@ -53,7 +57,7 @@ const HomeScreen = ({ match }) => {
               <table>
                 <thead>
                   <tr>
-                    <td>Min</td> 
+                    <td>Min</td>
                     <td>Max</td>
                   </tr>
                 </thead>
@@ -75,11 +79,29 @@ const HomeScreen = ({ match }) => {
                         onChange={(e) => setMax(e.target.value)}
                       />
                     </td>
+                    <td>
+                      <select onChange={(e)=>setCat(e.target.value)}>
+                        <option selected value={"DEFAULT"}>
+                          Category
+                        </option>
+                        {categoryList &&
+                          categoryList.map((category) => (
+                            <option value={category.name} key={category._id}>
+                              {category.name}
+                            </option>
+                          ))}
+                      </select>
+                    </td>
                   </tr>
                 </tbody>
               </table>
               <div>
-                <button className="border-0 p-3 rounded" onClick={() => handleFilterWithPrice()}>Filter</button>
+                <button
+                  className="border-0 p-3 rounded"
+                  onClick={() => handleFilterWithPrice()}
+                >
+                  Filter
+                </button>
               </div>
             </div>
           </div>

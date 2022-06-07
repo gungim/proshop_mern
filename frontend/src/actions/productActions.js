@@ -22,17 +22,20 @@ import {
   PRODUCT_TOP_REQUEST,
   PRODUCT_TOP_SUCCESS,
   PRODUCT_TOP_FAIL,
+  PRODUCT_LIST_STORE_REQUEST,
+  PRODUCT_LIST_STORE_SUCCESS,
+  PRODUCT_LIST_STORE_FAIL,
 } from '../constants/productConstants'
 import { logout } from './userActions'
 
-export const listProducts = (keyword = '', pageNumber = '', min="", max="") => async (
+export const listProducts = (keyword = '', pageNumber = '', min="", max="", cat) => async (
   dispatch
 ) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST })
 
     const { data } = await axios.get(
-      `${host}/api/products?keyword=${keyword}&pageNumber=${pageNumber}&max=${max}&min=${min}`
+      `${host}/api/products?keyword=${keyword}&pageNumber=${pageNumber}&max=${max}&min=${min}&cat=${cat}`
     )
 
     dispatch({
@@ -42,6 +45,31 @@ export const listProducts = (keyword = '', pageNumber = '', min="", max="") => a
   } catch (error) {
     dispatch({
       type: PRODUCT_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const listProductsStore = (keyword = '', pageNumber = '', min="", max="", id) => async (
+  dispatch
+) => {
+  try {
+    dispatch({ type: PRODUCT_LIST_STORE_REQUEST })
+
+    const { data } = await axios.get(
+      `${host}/api/stores/storec/${id}/products?keyword=${keyword}&pageNumber=${pageNumber}&max=${max}&min=${min}`
+    )
+
+    dispatch({
+      type: PRODUCT_LIST_STORE_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_LIST_STORE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

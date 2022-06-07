@@ -1,23 +1,29 @@
 import mongoose from "mongoose";
 
-const storeSchema = mongoose.Schema({
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: "User",
+const storeSchema = mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
+    name: {
+      type: String,
+      requried: true,
+    },
+    description: {
+      type: String,
+    },
+    status: {
+      type: String,
+      default: "creating",
+    },
   },
-	name:{
-		type: String,
-		requried: true,
-	},
-	description:{
-		type: String,
-	}
-},{
-	timestamps: true,
-});
+  {
+    timestamps: true,
+  }
+);
 
+const Store = mongoose.model("Store", storeSchema);
 
-const Store = mongoose.model("Store", storeSchema)
-
-export default Store
+export default Store;
